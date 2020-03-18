@@ -1,50 +1,24 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import Post from '../../components/Post/Post';
-import FullPost from '../../components/FullPost/FullPost';
-import NewPost from '../../components/NewPost/NewPost';
+import Posts from './Posts/Posts';
+import {Route}from 'react-router-dom';
 import './Blog.css';
 
 class Blog extends Component {
-    state = {
-        posts:[]
-    }
-    componentDidMount () {
-        axios.get('https://jsonplaceholder.typicode.com/posts' )
-        .then(response => {
-            const posts = response.data.slice(0,10);
-            const updatedPosts = posts.map(post =>{
-                return {
-                    ...post,
-                    author:'max',
-                    selectedPostId : null
-                }
-            });
-            this.setState({posts: updatedPosts});
-            //console.log(response);
-        });
-    }
-    postSelectedHandler = (id) =>{
-        this.setState({selectedPostId: id});
-    }
     render () {
-       const posts = this.state.posts.map(post => {
-            return <Post key = {post.id} 
-            title = {post.title} 
-            author = {post.author}
-            clicked = {() => this.postSelectedHandler(post.id)}/>;
-        });
+       
         return (
-            <div>
-                <section className="Posts">
-                    {posts}
-                </section>
-                <section>
-                    <FullPost id = {this.state.selectedPostId}/>
-                </section>
-                <section>
-                    <NewPost />
-                </section>
+            <div className = {"Blog"}>
+                <header className = {"Blog"}>
+                    <nav>
+                        <ul>
+                            <li><a href ='/'>Home</a></li>
+                            <li><a href ='/new-post'>New Post</a></li>
+                        </ul>
+                    </nav>
+                </header>
+               {/* <Route path = '/' exact render = {() => <h1> HOME </h1>} /> */}
+               <Route path = '/' component = {Posts}/>
+               
             </div>
         );
     }
